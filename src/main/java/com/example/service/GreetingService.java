@@ -1,23 +1,26 @@
 package com.example.service;
 
-import com.example.model.Greeting;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.example.model.Greeting;
+import com.example.repository.GreetingRepository;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GreetingService {
-    private final List<Greeting> greetings = new ArrayList<>();
-    private Long currentId = 1L;
+    private final GreetingRepository greetingRepository;
 
-    public Greeting saveGreeting(Greeting greeting) {
-        greeting.setId(currentId++);
-        greetings.add(greeting);
-        return greeting;
+    public GreetingService(GreetingRepository greetingRepository) {
+        this.greetingRepository = greetingRepository;
     }
 
-    public List<Greeting> getAllGreetings() {
-        return greetings;
+    public Greeting saveGreeting(Greeting greeting) {
+        return greetingRepository.save(greeting);
+    }
+
+    public Optional<Greeting> findGreetingById(Long id) {
+        return greetingRepository.findById(id);
     }
 }
